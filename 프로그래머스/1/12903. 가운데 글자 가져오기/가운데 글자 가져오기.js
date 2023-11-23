@@ -3,7 +3,7 @@ function solution(s) {
     const index = isEven ? s.length / 2 - 1 : parseInt(s.length / 2);
     
     if (isEven) {
-        return s[index] + s[index + 1];
+        return s.substring(index, index + 2);
     }
     
     return s[index];
