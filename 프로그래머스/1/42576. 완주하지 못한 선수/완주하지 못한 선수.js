@@ -1,20 +1,21 @@
 function solution(participant, completion) {
-    const completionCnt = {};
-    completion.forEach((player) => {
-        completionCnt[player] = Object.hasOwn(completionCnt, player) ? completionCnt[player] + 1 : 1;
-    });
+    const completionCnt = completion.reduce((cntObj, player) => {
+        cntObj[player] = Object.hasOwn(cntObj, player) ? cntObj[player] + 1 : 1;
+        return cntObj;
+    }, {});
     
-    let answer = '';
-    
-    for (const player of participant) {
+    const answer = participant.find((player) => {
         if (!Object.hasOwn(completionCnt, player) ||
             completionCnt[player] === 0) {
-            answer = player;
-            break;
+            return true;
         }
         
-        completionCnt[player] -= 1;
-    }
+        if (Object.hasOwn(completionCnt, player)) {
+            completionCnt[player] -= 1;
+        }
+        
+        return false;
+    });
     
     return answer;
 }
