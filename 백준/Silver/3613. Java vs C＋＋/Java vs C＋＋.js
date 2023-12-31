@@ -4,7 +4,7 @@ const readline = require('readline').createInterface({
 });
 
 readline.on('line', function (input) {
-  solution(input);
+  console.log(solution(input));
   readline.close();
 });
 
@@ -12,21 +12,10 @@ const ERROR_MESSAGE = 'Error!';
 const UNDERSCORE = '_';
 
 function solution(input) {
-  if (isInvalid(input)) {
-    console.log(ERROR_MESSAGE);
-    return;
-  }
-
-  if (isCpp(input)) {
-    console.log(convertToJava(input));
-    return;
-  }
-
-  if (isJava(input)) {
-    console.log(convertToCpp(input));
-    return;
-  }
-  console.log(ERROR_MESSAGE);
+  if (isInvalid(input)) return ERROR_MESSAGE;
+  if (isCpp(input)) return convertToJava(input);
+  if (isJava(input)) return convertToCpp(input);
+  return ERROR_MESSAGE;
 }
 
 function isCpp(input) {
@@ -40,12 +29,7 @@ function isJava(input) {
 }
 
 function isInvalid(input) {
-  return (
-    input === '' ||
-    input[0] === UNDERSCORE ||
-    input[input.length - 1] === UNDERSCORE ||
-    input[0] === input[0].toUpperCase()
-  );
+  return input === '' || input[0] === input[0].toUpperCase();
 }
 
 function convertToCpp(java) {
