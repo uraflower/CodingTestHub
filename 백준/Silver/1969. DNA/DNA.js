@@ -1,18 +1,8 @@
-const readline = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+const fs = require('fs')
+const [first, ...rest] = fs.readFileSync('/dev/stdin').toString().trim().split('\n');
 
-const input = [];
-
-readline
-  .on('line', function (line) {
-    input.push(line);
-  })
-  .on('close', function () {
-    const [N, M] = input.shift().split(' ').map(Number);
-    solution(N, M, input);
-  });
+const [N, M] = first.split(' ').map(Number);
+solution(N, M, rest);
 
 function solution(N, M, DNAs) {
   const countArray = countNucleotides(M, DNAs);
