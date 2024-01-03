@@ -6,8 +6,10 @@ const [a, b, c] = fs
   .split('\n')
   .map(Number);
 const multiplied = Array.from((a * b * c).toString());
+const cnt = Array.from({ length: 10 }).fill(0);
 
-for (let i = 0; i <= 9; i++) {
-  const cnt = multiplied.filter((num) => num === i.toString()).length;
-  console.log(cnt);
-}
+multiplied.forEach((num) => {
+  cnt[num]++;
+});
+
+console.log(cnt.join('\n'));
