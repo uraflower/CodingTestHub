@@ -1,18 +1,8 @@
-const readline = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+const fs = require('fs');
+const input = fs.readFileSync('/dev/stdin').toString().trim().split('\n');
+const N = input.shift();
 
-const input = [];
-
-readline
-  .on('line', function (line) {
-    input.push(line);
-  })
-  .on('close', function () {
-    const N = input.shift();
-    solution(N, input);
-  });
+solution(N, input);
 
 function solution(N, words) {
   const numbers = [];
