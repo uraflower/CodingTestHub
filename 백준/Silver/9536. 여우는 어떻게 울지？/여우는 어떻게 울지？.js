@@ -1,9 +1,6 @@
 const fs = require('fs');
-const [T, ...input] = fs
-  .readFileSync('/dev/stdin')
-  .toString()
-  .trim()
-  .split('\n');
+const input = fs.readFileSync('/dev/stdin').toString().trim().split('\n');
+const T = Number(input.shift());
 
 for (let i = 0; i < T; i++) {
   const endIndex = input.findIndex(
