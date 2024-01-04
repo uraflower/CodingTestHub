@@ -1,15 +1,7 @@
-const rl = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+const fs = require('fs');
+const numbers = [...fs.readFileSync('/dev/stdin').toString().trim()].map(Number);
 
-const numbers = [];
-
-rl.on('line', function (line) {
-  numbers.push(...Array.from(line).map(Number));
-}).on('close', function () {
-  solution();
-});
+solution();
 
 function solution() {
   let cnt = Array.from({ length: 10 }).fill(0);
