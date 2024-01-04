@@ -9,24 +9,23 @@ const numbers = input
   .map(Number)
   .sort((a, b) => Number(a) - Number(b));
 
-solution(n, x, numbers);
+solution(x, numbers);
 
-function solution(n, x, numbers) {
+function solution(x, numbers) {
   let cnt = 0;
-
   let l = 0;
   let r = numbers.length - 1;
 
-  // 1 2 3 5 7 9 10 11 12
   while (l < r) {
-    if (numbers[l] + numbers[r] === x) {
+    const sum = numbers[l] + numbers[r];
+    if (sum === x) {
       cnt++;
       l++;
       r--;
       continue;
     }
 
-    numbers[l] + numbers[r] < x ? l++ : r--;
+    sum < x ? l++ : r--;
   }
 
   console.log(cnt);
