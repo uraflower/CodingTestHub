@@ -1,9 +1,9 @@
-const rl = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-const input = [];
+const fs = require('fs');
+const [T, ...lines] = fs
+  .readFileSync('/dev/stdin')
+  .toString()
+  .trim()
+  .split('\n');
 
 class ListNode {
   constructor(data, prev = null, next = null) {
@@ -13,12 +13,7 @@ class ListNode {
   }
 }
 
-rl.on('line', function (line) {
-  input.push(line);
-}).on('close', function () {
-  const [T, ...lines] = input;
-  solution(Number(T), lines);
-});
+solution(Number(T), lines);
 
 function solution(T, lines) {
   lines.forEach((string) => {
