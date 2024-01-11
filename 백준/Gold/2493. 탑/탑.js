@@ -6,35 +6,28 @@ const input = fs
   .split('\n');
 
 const N = Number(input[0]);
-const tops = input[1].split(' ').map((top, i) => {
-  return {
-    top: Number(top),
-    index: i + 1,
-  };
-});
+const tops = input[1].split(' ').map(Number);
 
-const receptions = []; // 수신 가능한 탑 스택
-const indexes = []; // 수신한 탑의 번호 배열
+const indexes = []; // 수신 가능한 탑의 번호 스택
+const results = []; // 수신 결과 배열
 
-tops.forEach((current) => {
-  while (receptions.length > 0) {
-    const closest = receptions[receptions.length - 1];
-    if (closest.top > current.top) {
-      indexes.push(closest.index);
+tops.forEach((current, index) => {
+  while (indexes.length > 0) {
+    const receivable = indexes[indexes.length - 1];
+
+    if (tops[receivable] > current) {
+      results.push(receivable + 1);
       break;
     } else {
-      receptions.pop();
+      indexes.pop();
     }
   }
 
-  if (receptions.length === 0) {
-    indexes.push(0);
+  if (indexes.length === 0) {
+    results.push(0);
   }
 
-  receptions.push({
-    top: current.top,
-    index: current.index,
-  });
+  indexes.push(index);
 });
 
-console.log(indexes.join(' '));
+console.log(results.join(' '));
