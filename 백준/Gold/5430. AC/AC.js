@@ -12,7 +12,6 @@ function solution() {
   for (let i = 0; i < Number(T); i++) {
     const functions = input[3 * i];
     const array = parse(input[3 * i + 2]);
-
     executeTestCase(functions, array);
   }
   console.log(result.join('\n'));
@@ -20,6 +19,8 @@ function solution() {
 
 function executeTestCase(functions, array) {
   let isReversed = false;
+  let left = 0;
+  let right = array.length - 1;
 
   for (let name of functions) {
     if (name === 'R') {
@@ -28,15 +29,13 @@ function executeTestCase(functions, array) {
     }
 
     // case of name === 'D'
-    if (array.length === 0) {
-      result.push('error');
-      return;
-    }
-    isReversed ? array.pop() : array.shift();
+    if (left > right) return result.push('error');
+    else isReversed ? right-- : left++;
   }
 
-  if (isReversed) array.reverse();
-  result.push(`[${array.join(',')}]`);
+  const sliced = array.slice(left, right + 1);
+  if (isReversed) sliced.reverse();
+  result.push(`[${sliced.join(',')}]`);
 }
 
 function parse(string) {
