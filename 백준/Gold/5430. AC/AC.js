@@ -1,40 +1,42 @@
 const fs = require('fs');
-const input = fs
+const [T, ...input] = fs
   .readFileSync('/dev/stdin')
   .toString()
   .trim()
   .split('\n');
 
-const T = Number(input[0]);
+const result = [];
+solution();
 
-for (let i = 1; i <= T * 3; i += 3) {
-  const functions = input[i];
-  const array = parse(input[i + 2]);
+function solution() {
+  for (let i = 0; i < Number(T); i++) {
+    const functions = input[3 * i];
+    const array = parse(input[3 * i + 2]);
 
-  let isErrorOccurred = false;
-  let cntR = 0;
+    executeTestCase(functions, array);
+  }
+  console.log(result.join('\n'));
+}
+
+function executeTestCase(functions, array) {
+  let isReversed = false;
 
   for (let name of functions) {
     if (name === 'R') {
-      cntR++;
-    } else {
-      if (array.length === 0) {
-        isErrorOccurred = true;
-        break;
-      }
-      isEven(cntR) ? array.shift() : array.pop();
+      isReversed = !isReversed;
+      continue;
     }
+
+    // case of name === 'D'
+    if (array.length === 0) {
+      result.push('error');
+      return;
+    }
+    isReversed ? array.pop() : array.shift();
   }
 
-  // 출력
-  if (isErrorOccurred) {
-    console.log('error');
-  } else {
-    if (!isEven(cntR)) {
-      array.reverse();
-    }
-    console.log(`[${array.join(',')}]`);
-  }
+  if (isReversed) array.reverse();
+  result.push(`[${array.join(',')}]`);
 }
 
 function parse(string) {
@@ -42,8 +44,4 @@ function parse(string) {
     .substring(1, string.length - 1)
     .split(',')
     .filter((num) => num !== '');
-}
-
-function isEven(num) {
-  return num % 2 === 0;
 }
