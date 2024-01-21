@@ -5,7 +5,7 @@ const [size, ...lines] = fs
   .trim()
   .split('\n');
 
-const [N, M] = size.split(' ');
+const [N, M] = size.split(' ').map(Number);
 const maze = lines.map((line) => [...line].map(Number));
 const queue = [[0, 0]]; // 방문 예정 위치 담기
 solution();
@@ -17,8 +17,10 @@ function solution() {
   while (queue.length > 0) {
     let [r, c] = queue.shift();
 
-    if (maze[r][c] === 0) continue;
-    if (r === N - 1 && c === M - 1) break;
+    if (r === N - 1 && c === M - 1) {
+      console.log(maze[N - 1][M - 1]);
+      break;
+    }
 
     const currentValue = maze[r][c];
     maze[r][c] = 0; // check visited
@@ -29,17 +31,11 @@ function solution() {
       update(nr, nc, currentValue);
     }
   }
-
-  console.log(maze[N - 1][M - 1]);
 }
 
 function update(nr, nc, curVal) {
-  if (isInvalidPosition(nr, nc) || maze[nr][nc] === 0) return;
-
-  queue.push([nr, nc]);
-  maze[nr][nc] = curVal + 1;
-}
-
-function isInvalidPosition(r, c) {
-  return r < 0 || r >= N || c < 0 || c >= M;
+  if (0 <= nr && nr < N && 0 <= nc && nc < M && maze[nr][nc] === 1) {
+    queue.push([nr, nc]);
+    maze[nr][nc] = curVal + 1;
+  }
 }
