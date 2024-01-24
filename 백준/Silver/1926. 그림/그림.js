@@ -18,7 +18,7 @@ function solution() {
     for (let j = 0; j < m; j++) {
       if (canvas[i][j] === 1) {
         cnt++;
-        const size = dfs(i, j);
+        const size = bfs(i, j);
         maxSize = size > maxSize ? size : maxSize;
       }
     }
@@ -27,24 +27,24 @@ function solution() {
   console.log(cnt + '\n' + maxSize);
 }
 
-function dfs(startR, startC) {
+function bfs(startR, startC) {
   const dr = [-1, 1, 0, 0];
   const dc = [0, 0, -1, 1];
-  const stack = [[startR, startC]];
+  const queue = [[startR, startC]];
   let size = 0;
 
   canvas[startR][startC] = 0; // 시작 지점 방문 체크
 
-  while (stack.length > 0) {
+  while (queue.length > 0) {
     size++;
-    const [r, c] = stack.pop();
+    const [r, c] = queue.shift();
 
     for (let i = 0; i < 4; i++) {
       const nr = r + dr[i];
       const nc = c + dc[i];
 
       if (isValidPosition(nr, nc) && canvas[nr][nc] === 1) {
-        stack.push([nr, nc]);
+        queue.push([nr, nc]);
         canvas[nr][nc] = 0; // 스택에 넣었던 지점을 중복해서 넣지 않게 미리 방문 체크
       }
     }
