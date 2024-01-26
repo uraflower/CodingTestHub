@@ -1,48 +1,46 @@
 const fs = require('fs');
-const input = fs.readFileSync('/dev/stdin').toString().trim().split('\n');
-
-const n = Number(input.shift());
-const rgb = input.map((line) => [...line]);
+let [n, ...rgb] = fs.readFileSync('/dev/stdin').toString().trim().split('\n');
 
 solution();
 
 function solution() {
-  let nonBlindCnt = 0;
-  let blindCnt = 0;
-  const nonBlindVisited = createVisited();
-  const blindVisited = createVisited();
+  const nonBlindCnt = countArea();
 
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < n; j++) {
-      if (nonBlindVisited[i][j] !== 0) {
-        dfs(i, j, nonBlindVisited, rgb[i][j]);
-        nonBlindCnt++;
-      }
-
-      if (blindVisited[i][j] !== 0) {
-        if (rgb[i][j] === 'R' || rgb[i][j] === 'G') {
-          dfs(i, j, blindVisited, 'R', 'G');
-        } else {
-          dfs(i, j, blindVisited, 'B');
-        }
-        blindCnt++;
-      }
-    }
-  }
+  // R -> G 대체
+  rgb = rgb.map((line) => line.replaceAll('R', 'G'));
+  const blindCnt = countArea();
 
   console.log(nonBlindCnt, blindCnt);
 }
 
-function createVisited() {
-  return Array.from({ length: n }).map(() => Array.from({ length: n }).fill(1));
+function countArea() {
+  let cnt = 0;
+  const visited = createVisited();
+
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if (visited[i][j] !== true) {
+        dfs(i, j, visited, rgb[i][j]);
+        cnt++;
+      }
+    }
+  }
+
+  return cnt;
 }
 
-function dfs(r, c, visited, ...target) {
+function createVisited() {
+  return Array.from({ length: n }).map(() =>
+    Array.from({ length: n }).fill(false),
+  );
+}
+
+function dfs(r, c, visited, target) {
   const dr = [-1, 1, 0, 0];
   const dc = [0, 0, -1, 1];
   const stack = [[r, c]];
 
-  visited[r][c] = 0;
+  visited[r][c] = true;
 
   while (stack.length > 0) {
     const [r, c] = stack.pop();
@@ -53,11 +51,11 @@ function dfs(r, c, visited, ...target) {
 
       if (
         isValidPosition(nr, nc) &&
-        visited[nr][nc] !== 0 &&
-        (rgb[nr][nc] === target[0] || rgb[nr][nc] === target[1])
+        visited[nr][nc] === false &&
+        rgb[nr][nc] === target
       ) {
         stack.push([nr, nc]);
-        visited[nr][nc] = 0;
+        visited[nr][nc] = true;
       }
     }
   }
