@@ -1,6 +1,7 @@
 const fs = require('fs');
 let [n, ...rgb] = fs.readFileSync('/dev/stdin').toString().trim().split('\n');
 
+n = Number(n);
 solution();
 
 function solution() {
@@ -15,12 +16,12 @@ function solution() {
 
 function countArea() {
   let cnt = 0;
-  const visited = createVisited();
+  const visited = createVisited(); // n * n array filled with false
 
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n; j++) {
       if (visited[i][j] !== true) {
-        dfs(i, j, visited, rgb[i][j]);
+        bfs(i, j, visited, rgb[i][j]);
         cnt++;
       }
     }
@@ -35,15 +36,15 @@ function createVisited() {
   );
 }
 
-function dfs(r, c, visited, target) {
+function bfs(r, c, visited, target) {
   const dr = [-1, 1, 0, 0];
   const dc = [0, 0, -1, 1];
-  const stack = [[r, c]];
+  const queue = [[r, c]];
 
   visited[r][c] = true;
 
-  while (stack.length > 0) {
-    const [r, c] = stack.pop();
+  while (queue.length > 0) {
+    const [r, c] = queue.shift();
 
     for (let i = 0; i < 4; i++) {
       const nr = r + dr[i];
@@ -54,7 +55,7 @@ function dfs(r, c, visited, target) {
         visited[nr][nc] === false &&
         rgb[nr][nc] === target
       ) {
-        stack.push([nr, nc]);
+        queue.push([nr, nc]);
         visited[nr][nc] = true;
       }
     }
