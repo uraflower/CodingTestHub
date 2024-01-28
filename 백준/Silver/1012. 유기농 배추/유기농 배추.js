@@ -34,7 +34,7 @@ function count(map) {
   for (let r = 0; r < H; r++) {
     for (let c = 0; c < W; c++) {
       if (map[r][c] === 1) {
-        bfs(r, c, map);
+        dfs(r, c, map);
         cnt++;
       }
     }
@@ -42,22 +42,22 @@ function count(map) {
   return cnt;
 }
 
-function bfs(r, c, map) {
+function dfs(r, c, map) {
   const dr = [-1, 1, 0, 0];
   const dc = [0, 0, -1, 1];
-  const queue = [[r, c]];
+  const stack = [[r, c]];
 
   map[r][c] = 0; // visited
 
-  while (queue.length > 0) {
-    const [r, c] = queue.shift();
+  while (stack.length > 0) {
+    const [r, c] = stack.pop();
 
     for (let i = 0; i < 4; i++) {
       const nr = r + dr[i];
       const nc = c + dc[i];
 
       if (isValidPosition(nr, nc) && map[nr][nc] === 1) {
-        queue.push([nr, nc]);
+        stack.push([nr, nc]);
         map[nr][nc] = 0; // visited
       }
     }
