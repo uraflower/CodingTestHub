@@ -1,6 +1,6 @@
 function solution(friends, gifts) {
     // 이름-번호(idnex) 쌍 객체 생성
-    const friendsIndexes = friends.reduce((obj, name, idx) => {
+    const indexes = friends.reduce((obj, name, idx) => {
         obj[name] = idx;
         return obj;
     }, {});
@@ -11,32 +11,30 @@ function solution(friends, gifts) {
     gifts.forEach((gift) => {
         // 주고받은 선물 내역 채우기
         const [sender, receiver] = gift.split(' ');
-        const senderIndex = friendsIndexes[sender];
-        const receiverIndex = friendsIndexes[receiver];
-        historyTable[senderIndex][receiverIndex] += 1;
+        historyTable[indexes[sender]][indexes[receiver]] += 1;
         // 선물 지수 계산
-        scores[senderIndex]++;
-        scores[receiverIndex]--;
+        scores[indexes[sender]]++;
+        scores[indexes[receiver]]--;
     });
     
     // 다음 달에 받을 선물 수
     const nextCnt = Array.from({length: friends.length}).fill(0);
-        
-    for (let i = 0; i < friends.length; i++) {
-        for (let j = i; j < friends.length; j++) {
-            const sendCnt = historyTable[i][j];
-            const receiveCnt = historyTable[j][i];
-            
+    
+    for (let s = 0; s < friends.length; s++) {
+        for (let r = s + 1; r < friends.length; r++) {
+            const sendCnt = historyTable[s][r];
+            const receiveCnt = historyTable[r][s];
+            // 주고받은 적이 없거나, 주고받은 횟수가 같은 경우 => 선물지수 비교
             if (sendCnt === receiveCnt) {
-                if (scores[i] === scores[j]) continue;
-                scores[i] < scores[j] ? nextCnt[j]++ : nextCnt[i]++;
+                if (scores[s] === scores[r]) continue;
+                scores[s] < scores[r] ? nextCnt[r]++ : nextCnt[s]++;
             }
+            // 주고받은 적이 있는 경우 => 주고받은 횟수 비교
             else {
-                sendCnt < receiveCnt ? nextCnt[j]++ : nextCnt[i]++;
+                sendCnt < receiveCnt ? nextCnt[r]++ : nextCnt[s]++;
             }
         }
     }
-    console.log(nextCnt);
     
     return Math.max(...nextCnt);
 }
