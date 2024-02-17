@@ -8,26 +8,17 @@ const [n, m] = fs
 
 const answer = [];
 
-solution(
-  [],
-  Array.from({ length: n }).map((_, i) => i + 1),
-  1,
-);
-console.log(answer.join('\n'));
-
-function solution(selected, nodes, depth) {
+function solution(selected, depth) {
   if (depth === m) {
-    for (let node of nodes) {
-      answer.push([...selected, node].join(' '));
-    }
+    answer.push(selected.join(' '));
     return;
   }
 
-  for (let node of nodes) {
-    if (new Set(selected).has(node)) continue;
-
-    const copiedNodes = new Set([...nodes]);
-    copiedNodes.delete(node);
-    solution([...selected, node], copiedNodes, depth + 1);
+  for (let i = 1; i <= n; i++) {
+    if (selected.includes(i)) continue;
+    solution([...selected, i], depth + 1);
   }
 }
+
+solution([], 0);
+console.log(answer.join('\n'));
