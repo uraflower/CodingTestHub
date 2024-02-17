@@ -9,7 +9,7 @@ const [n, m] = fs
 const answer = [];
 
 solution(
-  new Set(),
+  [],
   Array.from({ length: n }).map((_, i) => i + 1),
   1,
 );
@@ -24,10 +24,10 @@ function solution(selected, nodes, depth) {
   }
 
   for (let node of nodes) {
-    if (selected.has(node)) continue;
+    if (new Set(selected).has(node)) continue;
 
     const copiedNodes = new Set([...nodes]);
     copiedNodes.delete(node);
-    solution(new Set([...selected, node]), copiedNodes, depth + 1);
+    solution([...selected, node], copiedNodes, depth + 1);
   }
 }
