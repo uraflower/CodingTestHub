@@ -47,7 +47,7 @@ function bfs() {
     const [current, depth] = queue.shift();
 
     for (let next of [current - 1, current + 1, current * 2]) {
-      if (next < 0 || next > 200000) continue;
+      if (next < 0 || next > 100000) continue;
       if (next === end) return depth + 1;
       if (!visited.has(next)) {
         visited.add(next);
@@ -58,8 +58,7 @@ function bfs() {
 }
 
 function solution() {
-  if (start === end) return 0;
-  if (start > end) return start - end;
+  if (start >= end) return start - end;
   return bfs();
 }
 
