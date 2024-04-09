@@ -6,39 +6,39 @@ const rawField = fs
   .split('\n')
   .map((line) => line.split(''));
 
+const ROW = 6;
+const COL = 12;
+
 function solution() {
-  const field = createField(); // 가로<->세로 변형
+  const field = createField();
 
   let count = 0; // 연쇄 카운트
   while (deleteGroup(field)) {
     fall(field);
-
     count++;
   }
 
   console.log(count);
 }
 
+// 가로<->세로 변형
 function createField() {
   const field = [];
-  for (let c = 0; c < 6; c++) {
-    const column = [];
-    for (let r = 0; r < 12; r++) {
-      column.push(rawField[r][c]);
+  for (let c = 0; c < ROW; c++) {
+    const row = []; // rawField에서 column이었던 것
+    for (let r = 0; r < COL; r++) {
+      row.push(rawField[r][c]);
     }
-    field.push(column);
+    field.push(row);
   }
   return field;
 }
 
 function deleteGroup(field) {
   let possible = false; // 지울 뿌요가 있는지 여부
-  const ROW = field.length; // 6
-  const COL = field[0].length; // 12
 
-  // 맨 뒤에서부터 확인
   for (let r = 0; r < ROW; r++) {
-    for (let c = COL - 1; c >= 0; c--) {
+    for (let c = 0; c < COL; c++) {
       if (field[r][c] === '.') continue;
       if (bfs(field, r, c)) possible = true;
     }
@@ -48,10 +48,7 @@ function deleteGroup(field) {
 }
 
 function bfs(field, r, c) {
-  const ROW = field.length; // 6
-  const COL = field[0].length; // 12
   const target = field[r][c];
-
   const visited = Array.from({ length: ROW }).map(() =>
     Array.from({ length: COL }).fill(false),
   );
