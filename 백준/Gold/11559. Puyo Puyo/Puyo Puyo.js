@@ -23,14 +23,14 @@ function solution() {
 
 // 가로<->세로 변형
 function createField() {
-  const field = [];
-  for (let c = 0; c < ROW; c++) {
-    const row = []; // rawField에서 column이었던 것
-    for (let r = 0; r < COL; r++) {
-      row.push(rawField[r][c]);
+  const field = Array.from({ length: ROW }).map(() => Array());
+
+  for (let r = 0; r < 12; r++) {
+    for (let c = 0; c < 6; c++) {
+      field[c].push(rawField[r][c]);
     }
-    field.push(row);
   }
+
   return field;
 }
 
