@@ -99,18 +99,8 @@ function bfs(field, r, c) {
 // 연쇄 이후 뿌요들을 필드 아래쪽으로 내리기
 function fall(field) {
   for (let r = 0; r < field.length; r++) {
-    // 가장 위에 있는 뿌요 위치 구하기
-    let pointer = field[r].findIndex((item) => item !== '.');
-    if (pointer < 0) continue; // 전부 비어있으면 건너뜀
-
-    let cnt = 0;
-    while (pointer < field[r].length) {
-      if (field[r][pointer] === '.') {
-        field[r].splice(pointer, 1);
-        cnt++;
-      } else pointer++;
-    }
-    field[r].unshift(...Array.from({ length: cnt }).fill('.'));
+    const puyos = field[r].filter((puyo) => puyo !== '.');
+    field[r] = [...Array(12 - puyos.length).fill('.'), ...puyos];
   }
 }
 
