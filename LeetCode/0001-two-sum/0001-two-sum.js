@@ -5,11 +5,19 @@
  * @return {number[]} 합이 target인 두 숫자의 인덱스
  */
 const twoSum = function(nums, target) {
-    for (let i = 0; i < nums.length; i++) {
-        const diff = target - nums[i];
-        const j = nums.findIndex((num, idx) => num === diff && idx !== i);
+    const numsIdx = {};
+    nums.forEach((num, idx) => {
+        if (!numsIdx[num]) numsIdx[num] = [idx];
+        else numsIdx[num].push(idx);
+    });
 
-        if (j !== -1) {
+
+    for (let i = 0; i < nums.length; i++) {
+        const num = nums[i];
+        const diff = target - num;
+        const j = numsIdx[diff]?.find((idx) => idx !== i);
+
+        if (j) {
             return [i, j];
         }
     }
