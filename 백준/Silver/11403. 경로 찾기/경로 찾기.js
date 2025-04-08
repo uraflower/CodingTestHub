@@ -5,32 +5,14 @@ const [n, ...input] = fs
   .trim()
   .split('\n');
 
-const path = input.map((row) => row.split(' ')); // matrix
-const adjList = input.map((row) => {
-  return row
-    .split(' ')
-    .map(Number)
-    .reduce((indexes, isPathExist, idx) => {
-      if (isPathExist) indexes.push(idx);
-      return indexes;
-    }, []);
-});
+const graph = input.map((row) => row.split(' ').map(Number));
 
-for (let i = 0; i < n; i++) {
-  const queue = [...adjList[i]];
-  const visited = new Set(queue);
-
-  while (queue.length) {
-    const currentNode = queue.shift();
-
-    adjList[currentNode].forEach((node) => {
-      if (!visited.has(node)) {
-        queue.push(node);
-        path[i][node] = 1;
-        visited.add(node);
-      }
-    });
+for (let k = 0; k < n; k++) {
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if (graph[i][k] && graph[k][j]) graph[i][j] = 1;
+    }
   }
 }
 
-console.log(path.map((row) => row.join(' ')).join('\n'));
+console.log(graph.map((row) => row.join(' ')).join('\n'));
