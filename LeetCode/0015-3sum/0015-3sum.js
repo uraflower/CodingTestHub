@@ -10,7 +10,7 @@ const threeSum = function(nums) {
     }, {});
 
     const answer = new Set();
-    const keys = Object.keys(counter);
+    const keys = Object.keys(counter).map(Number);
 
     // 세 숫자가 서로 다른 경우
     for (let i = 0; i < keys.length; i++) {
@@ -33,8 +33,8 @@ const threeSum = function(nums) {
         if (counter[num] === 1) continue;
 
         // 숫자가 0이면 세 숫자 모두 0이어야 하므로 따로 처리
-        if (num === 0 && counter[num] >= 3) {
-            answer.add('0 0 0');
+        if (num === 0 ) {
+            if (counter[num] >= 3) answer.add('0 0 0');
             continue;
         }
 
