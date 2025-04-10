@@ -4,7 +4,7 @@
  * @return {number[][]}
  */
 const threeSum = function(nums) {
-    const answer = new Set();
+    const answer = [];
     const sorted = nums.toSorted((a, b) => Number(a) - Number(b));
 
     for (let i = 0; i < sorted.length; i++) {
@@ -18,13 +18,18 @@ const threeSum = function(nums) {
             if (sum > 0) right--;
             else if (sum < 0) left++;
             else {
-                answer.add([sorted[i], sorted[left], sorted[right]].sort().join(' '));
+                answer.push([sorted[i], sorted[left], sorted[right]]);
                 right--;
+
+                // 중복 방지
+                while (sorted[right] === sorted[right + 1] && left < right) {
+                    right--;
+                }
             }
         }
     }
 
-    return Array.from(answer).map((triplet) => triplet.split(' ').map(Number));
+    return answer;
 };
 
 // 시간복잡도: O(n^2)
