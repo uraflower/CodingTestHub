@@ -4,46 +4,28 @@
  * @return {number[][]}
  */
 const threeSum = function(nums) {
-    const counter = nums.reduce((counter, num) => {
-        counter[num] = (counter[num] ?? 0) + 1;
-        return counter;
-    }, {});
-
     const answer = new Set();
-    const keys = Object.keys(counter).map(Number);
+    const sorted = nums.toSorted((a, b) => Number(a) - Number(b));
 
-    // 세 숫자가 서로 다른 경우
-    for (let i = 0; i < keys.length; i++) {
-        for (let j = i + 1; j < keys.length; j++) {
-            const numK = -(keys[i] + keys[j]);
+    for (let i = 0; i < sorted.length; i++) {
+        if (i > 0 && sorted[i] === sorted[i - 1]) continue;
 
-            if (counter[numK]) {
-                let count = counter[numK];
-                if (keys[i] === numK) count--;
-                if (keys[j] === numK) count--;
-                
-                if (count >= 1) answer.add([keys[i], keys[j], numK].sort().join(' '));
+        let left = i + 1;
+        let right = sorted.length - 1;
+        while (left < right) {
+            const sum = sorted[i] + sorted[left] + sorted[right];
+
+            if (sum > 0) right--;
+            else if (sum < 0) left++;
+            else {
+                answer.add([sorted[i], sorted[left], sorted[right]].sort().join(' '));
+                right--;
             }
-        }
-    }
-
-    // 세 숫자 중 중복이 있는 경우
-    for (let num of keys) {
-        // 중복이 없으면 건너뛰기
-        if (counter[num] === 1) continue;
-
-        // 숫자가 0이면 세 숫자 모두 0이어야 하므로 따로 처리
-        if (num === 0 ) {
-            if (counter[num] >= 3) answer.add('0 0 0');
-            continue;
-        }
-
-        // 두 숫자가 중복인 경우
-        const numK = -(num * 2);
-        if (counter[numK]) {
-            answer.add([num, num, numK].sort().join(' '));
         }
     }
 
     return Array.from(answer).map((triplet) => triplet.split(' ').map(Number));
 };
+
+// 시간복잡도: O(n^2)
+// 공간복잡도: O(n)
