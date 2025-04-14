@@ -4,9 +4,7 @@
  * @return {boolean}
  */
 const isPalindrome = function(s) {
-    const filtered = Array.from(s.toLowerCase()).reduce((str, char) => {
-        return isAlphanumeric(char) ? str + char : str;
-    }, '');
+    filtered = s.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
 
     for (let left = 0, right = filtered.length - 1; left < right; left++, right--) {
         if (filtered[left] !== filtered[right]) {
