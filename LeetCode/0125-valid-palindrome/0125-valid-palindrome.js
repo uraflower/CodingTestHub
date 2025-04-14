@@ -4,16 +4,12 @@
  * @return {boolean}
  */
 const isPalindrome = function(s) {
-    const filtered = Array.from(s).reduce((str, char) => {
-        if (char !== ' ' && isAlphanumeric(char)) {
-            str += char.toLowerCase();
-        }
-
-        return str;
+    const filtered = Array.from(s.toLowerCase()).reduce((str, char) => {
+        return isAlphanumeric(char) ? str + char : str;
     }, '');
 
-    for (let i = 0; i < Math.floor(filtered.length / 2); i++) {
-        if (filtered[i] !== filtered[filtered.length - 1 - i]) {
+    for (let left = 0, right = filtered.length - 1; left < right; left++, right--) {
+        if (filtered[left] !== filtered[right]) {
             return false;
         }
     }
@@ -23,8 +19,5 @@ const isPalindrome = function(s) {
 
 
 function isAlphanumeric(char) {
-    const ASCII_a = 'a'.charCodeAt();
-    const ASCII_z = 'z'.charCodeAt();
-    const ASCII_char = char.toLowerCase().charCodeAt();
-    return (ASCII_a <= ASCII_char && ASCII_char <= ASCII_z) || !Number.isNaN(Number(char));
+    return char !== ' ' && (('a' <= char && char <= 'z') || !Number.isNaN(Number(char)));
 }
