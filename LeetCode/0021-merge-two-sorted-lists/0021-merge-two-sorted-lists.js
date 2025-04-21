@@ -4,7 +4,6 @@
 function ListNode(val, next) {
     this.val = (val === undefined ? 0 : val)
     this.next = (next === undefined ? null : next)
-    return this;
 }
 
 /**
@@ -14,7 +13,7 @@ function ListNode(val, next) {
  * @return {ListNode}
  */
 const mergeTwoLists = function (list1, list2) {
-    let head = ListNode(-1, null);
+    let head = new ListNode(-1, null);
     let mergedList = head;
 
     let node1 = list1;
