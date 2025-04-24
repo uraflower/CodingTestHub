@@ -9,7 +9,7 @@ const exist = function (board, word) {
 
     const dr = [0, 0, 1, -1];
     const dc = [1, -1, 0, 0];
-    const visited = Array.from({ length: row }).map(() => Array.from({ length: col }));
+    const visited = Array.from({ length: row }, () => Array(col).fill(false));
     
     function dfs(r, c, charIdx) {        
         if (charIdx === word.length) return true;
@@ -18,7 +18,6 @@ const exist = function (board, word) {
         if (visited[r][c]) return false;
 
         visited[r][c] = true;
-        console.log(r, c, board[r][c], charIdx);
         for (let i = 0; i < 4; i++) {
             const nr = r + dr[i];
             const nc = c + dc[i];
@@ -31,7 +30,7 @@ const exist = function (board, word) {
 
     for (let r = 0; r < row; r++) {
         for (let c = 0; c < col; c++) {
-            if (dfs(r, c, 0)) return true;
+            if (board[r][c] === word[0] && dfs(r, c, 0)) return true;
         }
     }
 
