@@ -4,13 +4,18 @@
  * @return {boolean}
  */
 const exist = function (board, word) {
-    const row = board.length;
-    const col = board[0].length;
-    const visited = Array.from({ length: row }, () => Array(col).fill(false));
-    const dr = [0, 0, 1, -1];
-    const dc = [1, -1, 0, 0];
+    const visited = Array.from({ length: board.length }).map(() => Array.from({ length: board[0].length }));
 
     function dfs(r, c, charIdx) {
+        // const stack = [[r, c, 0]];
+        // const visited = Array.from({ length: board.length }).map(() => Array.from({ length: board[0].length }));
+
+        const dr = [0, 0, 1, -1];
+        const dc = [1, -1, 0, 0];
+
+        // while (stack.length) {
+        // const [r, c, charIdx] = stack.pop();
+        // visited[r][c] = true;
 
         if (charIdx + 1 === word.length) return true;
 
@@ -18,22 +23,27 @@ const exist = function (board, word) {
             const nr = r + dr[i];
             const nc = c + dc[i];
 
-            if (0 <= nr && nr < row && 0 <= nc && nc < col && !visited[nr][nc] && word[charIdx + 1] === board[nr][nc]) {
+            if (0 <= nr && nr < board.length && 0 <= nc && nc < board[0].length && !visited[nr][nc] && word.charAt(charIdx + 1) === board[nr][nc]) {
+                // stack.push([nr, nc, charIdx + 1]);
                 visited[nr][nc] = true;
-                if (dfs(nr, nc, charIdx + 1)) return true;
-                visited[nr][nc] = false;
+                const result = dfs(nr, nc, charIdx + 1);
+                if (result) return true;
+                if (!result) {
+                    visited[nr][nc] = false;
+                }
             }
         }
+        // }
 
         return false;
     }
-
-    for (let r = 0; r < row; r++) {
-        for (let c = 0; c < col; c++) {
-            if (word[0] === board[r][c]) {
+    for (let r = 0; r < board.length; r++) {
+        for (let c = 0; c < board[0].length; c++) {
+            if (word.charAt(0) === board[r][c]) {
                 visited[r][c] = true;
-                if (dfs(r, c, 0)) return true;
+                const result = dfs(r, c, 0);
                 visited[r][c] = false;
+                if (result) return true;
             }
         }
     }
