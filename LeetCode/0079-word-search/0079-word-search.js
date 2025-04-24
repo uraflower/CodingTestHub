@@ -4,33 +4,37 @@
  * @return {boolean}
  */
 const exist = function (board, word) {
-    const row = board.length;
-    const col = board[0].length;
+    const visited = Array.from({ length: board.length }).map(() => Array.from({ length: board[0].length }).fill(false));
 
-    const dr = [0, 0, 1, -1];
-    const dc = [1, -1, 0, 0];
-    const visited = Array.from({ length: row }).map(() => Array(col).fill(false));
-    
-    function dfs(r, c, charIdx) {        
-        if (charIdx === word.length) return true;
-        if (!(0 <= r && r < row && 0 <= c && c < col)) return false;
-        if (board[r][c] !== word[charIdx]) return false;
-        if (visited[r][c]) return false;
+    function dfs(r, c, charIdx) {
+        const dr = [0, 0, 1, -1];
+        const dc = [1, -1, 0, 0];
 
-        visited[r][c] = true;
+        if (charIdx + 1 === word.length) return true;
+
         for (let i = 0; i < 4; i++) {
             const nr = r + dr[i];
             const nc = c + dc[i];
-            if (dfs(nr, nc, charIdx + 1)) return true;
+
+            if (0 <= nr && nr < board.length && 0 <= nc && nc < board[0].length && !visited[nr][nc] && word[charIdx + 1] === board[nr][nc]) {
+                visited[nr][nc] = true;
+                const result = dfs(nr, nc, charIdx + 1);
+                visited[nr][nc] = false;
+                if (result) return true;
+            }
         }
-        visited[r][c] = false;
+
         return false;
     }
-    
 
-    for (let r = 0; r < row; r++) {
-        for (let c = 0; c < col; c++) {
-            if (board[r][c] === word[0] && dfs(r, c, 0)) return true;
+    for (let r = 0; r < board.length; r++) {
+        for (let c = 0; c < board[0].length; c++) {
+            if (word[0] === board[r][c]) {
+                visited[r][c] = true;
+                const result = dfs(r, c, 0);
+                visited[r][c] = false;
+                if (result) return true;
+            }
         }
     }
 
