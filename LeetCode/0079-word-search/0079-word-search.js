@@ -9,7 +9,7 @@ const exist = function (board, word) {
 
     const dr = [0, 0, 1, -1];
     const dc = [1, -1, 0, 0];
-    const visited = Array.from({ length: row }, () => Array(col).fill(false));
+    const visited = Array.from({ length: row }).map(() => Array(col).fill(false));
     
     function dfs(r, c, charIdx) {        
         if (charIdx === word.length) return true;
