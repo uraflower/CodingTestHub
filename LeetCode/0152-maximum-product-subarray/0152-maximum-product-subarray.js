@@ -3,15 +3,19 @@
  * @return {number}
  */
 const maxProduct = function (nums) {
-    const minDP = [...nums];
-    const maxDP = [...nums];
+    let min = nums[0];
+    let max = nums[0];
+    let result = nums[0];
 
     for (let i = 1; i < nums.length; i++) {
-        min = Math.min(minDP[i], maxDP[i - 1] * minDP[i], minDP[i - 1] * maxDP[i]);
-        max = Math.max(maxDP[i], maxDP[i - 1] * maxDP[i], minDP[i - 1] * minDP[i]);
-        minDP[i] = min
-        maxDP[i] = max
+        let tempMin = Math.min(nums[i], min * nums[i], max * nums[i]);
+        let tempMax = Math.max(nums[i], min * nums[i], max * nums[i]);
+        min = tempMin;
+        max = tempMax;
+        result = Math.max(result, max);
+        console.log(nums[i], min, max, result);
     }
 
-    return Math.max(...maxDP);
-};
+
+    return result;
+}
