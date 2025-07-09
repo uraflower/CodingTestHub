@@ -21,19 +21,26 @@ const buildTree = function (preorder, inorder) {
     // 따라서 preorder[0]을 inorder에서 찾고
     // 그 왼쪽, 오른쪽으로 배열을 나눠서 이걸 반복
 
-    function dfs(start, end) {
-        if (start >= end) {
+
+    let preorderIndex = 0;
+    const map = inorder.reduce((map, val, index) => {
+        map[val] = index;
+        return map;
+    }, {});
+
+    function build(start, end) {
+        if (start > end) {
             return null;
         }
         
-        const root = new TreeNode(preorder.shift());
-        const idx = inorder.slice(start, end).findIndex((v) => v === root.val);
+        const root = new TreeNode(preorder[preorderIndex++]);
+        const index = map[root.val];
 
-        root.left = dfs(start, start + idx);
-        root.right = dfs(start + idx + 1, end);
+        root.left = build(start, index - 1);
+        root.right = build(index + 1, end);
 
         return root;
     }
 
-    return dfs(0, inorder.length);
+    return build(0, inorder.length - 1);
 };
